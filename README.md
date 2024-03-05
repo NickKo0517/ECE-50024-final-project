@@ -1,9 +1,9 @@
-# ECE-50024-final-project
+# ECE-50024-final-project 
 
-## Implementation of PnP-ADMM according to paper by Dr.Stanley. H. Chan
-reference: https://doi.org/10.48550/arXiv.1605.01710 
+## Implementation of PnP-ADMM according to paper by Dr.Stanley. H. Chan reference: https://doi.org/10.48550/arXiv.1605.01710 
+
 ## Plan 3/3/2024:
-implement only General Linear Inverse Problem for Thursday Deadline (see section 2.4 in attached pdf (user_guide_v1.pdf))
+implement only image deblurring for Thursday Deadline (see section 2.1 in attached pdf (user_guide_v1.pdf))
 
 ## Project Goal:
 * Translate Matlab implementation from Dr.Stanley Chan to Python
