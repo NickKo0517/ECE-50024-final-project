@@ -51,3 +51,5 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     # iteratively compute the desired quantities x
     
     return 
+
+print('hello')
