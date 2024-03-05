@@ -15,6 +15,7 @@ from utility import proj, psnr
 import scipy
 import copy
 
+"""lets fix the deblurring/filtering method to a simple one"""
 def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
                      method: str, params: dict[str: float])->tuple[float]:
     """
@@ -41,6 +42,12 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     if 'gamma' not in params:
         params['gamma'] = 1
     
-    # General loop setup
+    # loop parameters setup
+    rho = params['rho']
+    max_itr = params['max_itr']
+    tol = params['tol']
+    gamma = params['gamma']
+
+    # iteratively compute the desired quantities x
     
     return 
