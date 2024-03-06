@@ -1,21 +1,16 @@
 import numpy as np
 from scipy.sparse.linalg import lsqr
 from skimage.restoration import denoise_nl_means, denoise_tv_chambolle, denoise_bilateral, denoise_wavelet
-import numpy as np
-from scipy.signal import fftconvolve
-from skimage.restoration import denoise_nl_means, denoise_tv_chambolle, denoise_wavelet
+from scipy.signal import fftconvolve, convolve2d
 from bm3d import bm3d
-import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-from scipy.signal import convolve2d
 from skimage import restoration
 from scipy import ndimage
 from utility import proj, psnr
 import scipy
 import copy
 
-"""lets fix the deblurring/filtering method to a simple one"""
 def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
                      method: str, params: dict[str: float])->tuple[float]:
     """
@@ -49,6 +44,18 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     tol = params['tol']
     gamma = params['gamma']
 
-    # iteratively compute the desired quantities x
+    # set up denoiser function: according to input string
+    if method == 'BM3D':
+        pass
+    elif method == 'TV':
+        pass
+    elif method == 'NLM':
+        pass
+    elif method == 'RF':
+        pass
+    else:
+        raise ValueError('please use one of the following denoisers: \
+                         {BM3D, TV, NLM, RF}\n')
+    # iteratively compute the desired quantities: returs x in the end
     
     return 
