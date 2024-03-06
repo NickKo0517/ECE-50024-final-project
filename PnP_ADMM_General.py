@@ -20,6 +20,7 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
                      method: str, params: dict[str: float])->tuple[float]:
     """
     solves the following iteratively
+        f(x) is some (linear transform), so f(x) = Ax
         x^(k+1) = argmin f(x) + (rho/2) ||x - (v^(k) - u^(k))||^2
         v^(k+1) = D_{sigma_k}(x^(k+1) + u^(k)), where sigma_k = sqrt(1/rho_k)
         u^(k+1) = u^(k) + (x^(k+1) - v^(k+1))
@@ -51,5 +52,3 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     # iteratively compute the desired quantities x
     
     return 
-
-print('hello')
