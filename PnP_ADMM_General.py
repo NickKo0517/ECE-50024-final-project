@@ -28,13 +28,10 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     # if no user defined input, use default parameters for ADMM
     if 'rho' not in params:
         params['rho'] = 1
-    
     if 'max_itr' not in params:
         params['max_itr'] = 20
-    
     if 'tol' not in params:
         params['tol'] = 1e-4
-    
     if 'gamma' not in params:
         params['gamma'] = 1
     
@@ -44,13 +41,15 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     tol = params['tol']
     gamma = params['gamma']
 
-    # set up denoiser function: according to input string
+    # set up denoiser according to input string
+    # assigning addr of filter wrappers to variable denoiser, when want to use it, 
+    # type denoiser(arg1, arg2, ...)
     if method == 'BM3D':
-        pass
+        denoiser = bm3d     
     elif method == 'TV':
-        pass
+        denoiser = denoise_tv_chambolle
     elif method == 'NLM':
-        pass
+        denoiser = denoise_nl_means
     elif method == 'RF':
         pass
     else:
