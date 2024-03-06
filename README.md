@@ -12,6 +12,7 @@ implement only image deblurring for Thursday Deadline (see section 2.1 in attach
 ## Progress Thus Far:
 * Skeleton code (incomplete) of general ADMM algorithm in .py file
 * Reading/annotating user_guide_v1 with relevant information
+* Write functions to add noise (blurring) via convolution
 * Syncing up all existing branches (all branches have the same info for now)
 
 ## Recommendation on Getting Started/Working:
