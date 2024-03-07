@@ -45,5 +45,5 @@ if __name__ == '__main__':
     print(f'PSNR = {PSNR_output:3.2f} dB \n')
 
     # save the two images
-    plt.imsave('noisy_input.png', y)
-    plt.imsave('deblurred_img.png', out)
+    plt.imsave('demo/noisy_input.png', y)
+    plt.imsave('demo/deblurred_img.png', out)
