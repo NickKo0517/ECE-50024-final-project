@@ -8,18 +8,24 @@ import cv2
 
 if __name__ == '__main__':
     img = Image.open('complex_img.jpg')
-    img = np.array(img)
+    img = np.array(img) /255
 
-    h = gaus_fiter_gen(sigma=1, size=img.shape)
+    h = gaus_fiter_gen(sigma=1, size=(9,9))
 
     # set noies level
     noise_level = 10/255
 
     # calculate observed image
-    width, height = img.shape
-    y = convolve2d(img, h, boundary='wrap') + noise_level*np.random.randn(width, height)
-    y = np.clip(y,[0,1])
 
+
+    y_with_blur = convolve2d(img, h,mode='valid',boundary='wrap')
+    width, height = y_with_blur.shape
+
+    y = y_with_blur + noise_level*np.random.randn(width, height)    #this is taking long...
+    y = np.clip(y,a_min=0, a_max=1)
+
+
+    plt.imsave('y_noisy.png', y)
     # set up parameters
     method = 'BM3D'
     if method == 'RF':
@@ -46,5 +52,5 @@ if __name__ == '__main__':
     print(f'PSNR = {PSNR_output:3.2f} dB \n')
 
     # save the two images
-    plt.imsave('demo/noisy_input.png', y)
-    plt.imsave('demo/deblurred_img.png', out)
+    plt.imsave('noisy_input.png', y)
+    plt.imsave('deblurred_img.png', out)

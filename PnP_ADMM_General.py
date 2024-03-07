@@ -36,7 +36,7 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         params['tol'] = 1e-4
     if 'gamma' not in params:
         params['gamma'] = 1
-    
+
     # loop parameters setup
     rho = params['rho']
     max_itr = params['max_itr']
@@ -44,10 +44,10 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     gamma = params['gamma']
 
     # set up denoiser according to input string
-    # assigning addr of filter wrappers to variable denoiser, when want to use it, 
+    # assigning addr of filter wrappers to variable denoiser, when want to use it,
     # type denoiser(arg1, arg2, ...)
     if method == 'BM3D':
-        denoiser = lambda v_tilde, sigma: bm3d(z=v_tilde, sigma_psd=sigma) 
+        denoiser = lambda v_tilde, sigma: bm3d(z=v_tilde, sigma_psd=sigma)
     elif method == 'TV':
         denoiser = lambda v_tilde: denoise_tv_chambolle(image=v_tilde)
     elif method == 'NLM':
@@ -58,50 +58,52 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     # iteratively compute the desired quantities: returs x in the end
     dim = noisy_img.shape
     N   = dim[0] * dim[1]
-    Hty = convolve2d(noisy_img, A, boundary='wrap') # convolution of the noise matrix and the original matrix
-    eigHtH = np.abs(np.fft2(noisy_img))**2
+    Hty = convolve2d(noisy_img, A, mode='same',boundary='wrap') # convolution of the noise matrix and the original matrix
+    eigHtH = np.abs(scipy.fft.fftn(noisy_img, dim))**2
+
     v           = 0.5*np.ones(dim)
-    x           = np.copy(v)
+    x           = np.copy(v)                       #suspect that the bug may arise here
     u           = np.zeros(dim)
     residual    = np.inf
 
     itr = 1
     one_div_sqrtN = 1/np.sqrt(N)
-    while residual>tol and itr<=max_itr:
+    while (residual > tol) and (itr<=max_itr):
         # store x, v, u from previous iteration for psnr residual calculation
         x_old = x
         v_old = v
         u_old = u
-        
+
         # inversion step
         xtilde = v - u
-        rhs    = np.fft2(Hty+rho*xtilde)
-        x      = np.real(np.ifft2(rhs/(eigHtH+rho)))
-        
+        rhs    = scipy.fft.fftn((Hty + rho*xtilde), dim)    #Hty should have same dimension with xtilde
+        x      = np.real(fft.ifftn(rhs/(eigHtH+rho)))
+
         # denoising step
         vtilde = x+u
-        vtilde = np.clip(vtilde, [0,1])		#map all values of vtilde to interval [0,1]
+        vtilde = np.clip(vtilde, a_min=0, a_max=1)		#map all values of vtilde to interval [0,1]
         sigma  = np.sqrt(lambd /rho)
+
         if method == 'BM3D':
             v  = denoiser(vtilde, sigma)
         else:
             v  = denoiser(vtilde)
-        
+
         # update langrangian multiplier
         u      = u + (x-v)
-        
+
         # update rho
-        rho = rho*gamma 
-        
+        rho = rho*gamma
+
         # calculate residual
         residualx = one_div_sqrtN*np.linalg.norm(x - x_old)
         residualv = one_div_sqrtN*np.linalg.norm(v - v_old)
         residualu = one_div_sqrtN*np.linalg.norm(u - u_old)
-        
+
         residual = residualx + residualv + residualu
 
         print('{} \t {} \t {} \t {} \n'.format(itr, residualx, residualv, residualu))
-        
+
         itr = itr+1
 
-    return x
+    return v
