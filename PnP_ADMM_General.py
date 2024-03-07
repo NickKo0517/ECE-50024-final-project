@@ -1,14 +1,13 @@
 import numpy as np
+from numpy import fft
 from scipy.sparse.linalg import lsqr
 from skimage.restoration import denoise_nl_means, denoise_tv_chambolle, denoise_bilateral, denoise_wavelet
-from RF import RF
 from scipy.signal import fftconvolve, convolve2d
+from scipy import fftpack, ndimage
 from bm3d import bm3d
-import matplotlib.pyplot as plt
 from PIL import Image
 from skimage import restoration
 from scipy import ndimage
-from utility import proj, psnr
 import scipy
 import copy
 
@@ -60,8 +59,51 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         raise ValueError('please use one of the following denoisers: \
                          {BM3D, TV, NLM}\n')
     # iteratively compute the desired quantities: returs x in the end
-    img_width, img_height = noisy_img.shape
-    N                     = img_width * img_height
-    Hty                   = convolve2d(noisy_img, A, mode='circular')                    # should be a convolution and outputs a matrix
-    eigHtH                =
-    return 
+    dim = noisy_img.shape
+    N                     = dim[0] * dim[1]
+    Hty                   = convolve2d(noisy_img, A, boundary='wrap')                    # should be a convolution and outputs a matrix
+    eigHtH                = np.abs(np.fft2(noisy_img))**2
+    v           = 0.5*np.ones(dim)
+    x           = v
+    u           = np.zeros(dim)
+    residual    = np.inf
+
+    itr = 1
+    while residual>tol and itr<=max_itr:
+        # store x, v, u from previous iteration for psnr residual calculation
+        x_old = x
+        v_old = v
+        u_old = u
+        
+        # inversion step
+        xtilde = v-u
+        rhs    = np.fft2(Hty+rho*xtilde)
+        x      = np.real(np.ifft2(rhs/(eigHtH+rho)))
+        
+        # denoising step
+        vtilde = x+u
+        vtilde = np.clip(vtilde, [0,1])
+        sigma  = np.sqrt(lambd /rho)
+        if method != 'BM3D':
+            v  = denoiser(vtilde)
+        else:
+            v  = denoiser(vtilde, sigma)
+        
+        # update langrangian multiplier
+        u      = u + (x-v)
+        
+        # update rho
+        rho = rho*gamma 
+        
+        # calculate residual
+        residualx = (1/np.sqrt(N))*np.linalg.norm(x - x_old)
+        residualv = (1/np.sqrt(N))*np.linalg.norm(v - v_old)
+        residualu = (1/np.sqrt(N))*np.linalg.norm(u - u_old)
+        
+        residual = residualx + residualv + residualu
+
+        print('{} \t {} \t {} \t {} \n'.format(itr, residualx, residualv, residualu))
+        
+        itr = itr+1
+
+    return x
