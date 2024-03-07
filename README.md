@@ -20,3 +20,6 @@ implement only image deblurring for Thursday Deadline (see section 2.1 in attach
 * Understand the user guide well (it's fine if you write a little code but have a good understanding)
 * If you annotate (add more comments/info) to user_guide_v1, it is okay to push to main branch
 * If write code, it is recommended that you push it to your own branch
+
+## Sample datasets for use:
+https://www.kaggle.com/datasets/kwentar/blur-dataset
