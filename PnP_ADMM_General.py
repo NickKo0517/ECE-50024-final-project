@@ -61,12 +61,12 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     Hty = convolve2d(noisy_img, A, boundary='wrap') # convolution of the noise matrix and the original matrix
     eigHtH = np.abs(np.fft2(noisy_img))**2
     v           = 0.5*np.ones(dim)
-    x           = v
+    x           = np.copy(v)
     u           = np.zeros(dim)
     residual    = np.inf
 
     itr = 1
-	one_div_sqrtN = 1/np.sqrt(N)
+    one_div_sqrtN = 1/np.sqrt(N)
     while residual>tol and itr<=max_itr:
         # store x, v, u from previous iteration for psnr residual calculation
         x_old = x

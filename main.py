@@ -16,7 +16,8 @@ if __name__ == '__main__':
     noise_level = 10/255
 
     # calculate observed image
-    y = convolve2d(img, h, boundary='wrap') + noise_level*np.random.randn(img.shape)
+    width, height = img.shape
+    y = convolve2d(img, h, boundary='wrap') + noise_level*np.random.randn(width, height)
     y = np.clip(y,[0,1])
 
     # set up parameters
