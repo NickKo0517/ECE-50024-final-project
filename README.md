@@ -1,11 +1,14 @@
 # ECE-50024-final-project 
 
-## Running the Code
-* if on local machine, clone the repo then do
-    > python3 main.py
-in the terminal
 
 ## Implementation of PnP-ADMM according to paper by Dr.Stanley. H. Chan reference: https://doi.org/10.48550/arXiv.1605.01710 
+
+## Running the Code
+* if on local machine, clone this repo then use the following command to execute
+```bash
+ python3 main.py
+```
+* If executed successfully, there will be 2 images in the demo folder
 
 ## Plan 3/3/2024:
 implement only image deblurring for Thursday Deadline (see section 2.1 in attached pdf (user_guide_v1.pdf))
