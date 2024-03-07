@@ -1,5 +1,10 @@
 # ECE-50024-final-project 
 
+## Running the Code
+* if on local machine, clone the repo then do
+    > python3 main.py
+in the terminal
+
 ## Implementation of PnP-ADMM according to paper by Dr.Stanley. H. Chan reference: https://doi.org/10.48550/arXiv.1605.01710 
 
 ## Plan 3/3/2024:
