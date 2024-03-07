@@ -16,11 +16,11 @@ if __name__ == '__main__':
     noise_level = 10/255
 
     # calculate observed image
-    y = convolve2d(img, h, boundary='wrap') + noise_level*np.random.rand(img.shape)
+    y = convolve2d(img, h, boundary='wrap') + noise_level*np.random.randn(img.shape)
     y = np.clip(y,[0,1])
 
     # set up parameters
-    method = 'RF'
+    method = 'BM3D'
     if method == 'RF':
         lambd = 0.0005
     elif method == 'NLM':
@@ -37,10 +37,10 @@ if __name__ == '__main__':
         'max_itr': 20
     }
 
-    # %main routine
+    # main routine
     out = PnP_ADMM_General(noisy_img=y, A=h, lambd=lambd, method=method, params=opts)
 
-    # %display
+    # display
     PSNR_output = cv2.PSNR(y, out)
     print(f'PSNR = {PSNR_output:3.2f} dB \n')
 

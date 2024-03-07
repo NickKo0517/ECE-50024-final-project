@@ -13,7 +13,7 @@ import copy
 
 """Ditch the RF filter as that requires extra adaptation from Matlab to Python"""
 def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
-                     method: str, params: dict[str: float])->tuple[float]:
+					 method: str, params: dict[str: float])->np.ndarray:
     """
     inputs:
         A: for deblurring, this should be the matrix that adds blurr to the original image
@@ -60,15 +60,16 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
                          {BM3D, TV, NLM}\n')
     # iteratively compute the desired quantities: returs x in the end
     dim = noisy_img.shape
-    N                     = dim[0] * dim[1]
-    Hty                   = convolve2d(noisy_img, A, boundary='wrap')                    # should be a convolution and outputs a matrix
-    eigHtH                = np.abs(np.fft2(noisy_img))**2
+    N   = dim[0] * dim[1]
+    Hty = convolve2d(noisy_img, A, boundary='wrap') # convolution of the noise matrix and the original matrix
+    eigHtH = np.abs(np.fft2(noisy_img))**2
     v           = 0.5*np.ones(dim)
     x           = v
     u           = np.zeros(dim)
     residual    = np.inf
 
     itr = 1
+	one_div_sqrtN = 1/np.sqrt(N)
     while residual>tol and itr<=max_itr:
         # store x, v, u from previous iteration for psnr residual calculation
         x_old = x
@@ -76,18 +77,18 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         u_old = u
         
         # inversion step
-        xtilde = v-u
+        xtilde = v - u
         rhs    = np.fft2(Hty+rho*xtilde)
         x      = np.real(np.ifft2(rhs/(eigHtH+rho)))
         
         # denoising step
         vtilde = x+u
-        vtilde = np.clip(vtilde, [0,1])
+        vtilde = np.clip(vtilde, [0,1])		#map all values of vtilde to interval [0,1]
         sigma  = np.sqrt(lambd /rho)
-        if method != 'BM3D':
-            v  = denoiser(vtilde)
-        else:
+        if method == 'BM3D':
             v  = denoiser(vtilde, sigma)
+        else:
+            v  = denoiser(vtilde)
         
         # update langrangian multiplier
         u      = u + (x-v)
@@ -96,9 +97,9 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         rho = rho*gamma 
         
         # calculate residual
-        residualx = (1/np.sqrt(N))*np.linalg.norm(x - x_old)
-        residualv = (1/np.sqrt(N))*np.linalg.norm(v - v_old)
-        residualu = (1/np.sqrt(N))*np.linalg.norm(u - u_old)
+        residualx = one_div_sqrtN*np.linalg.norm(x - x_old)
+        residualv = one_div_sqrtN*np.linalg.norm(v - v_old)
+        residualu = one_div_sqrtN*np.linalg.norm(u - u_old)
         
         residual = residualx + residualv + residualu
 
