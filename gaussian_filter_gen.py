@@ -6,5 +6,4 @@ def gaus_fiter_gen(sigma, size):
     x, y = np.meshgrid(x, y)
     h = np.exp(-(x**2 + y**2) / (2. * sigma**2))
     h = h / np.sum(h)  # Normalize
-    
     return h

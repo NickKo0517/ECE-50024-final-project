@@ -58,11 +58,11 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     # iteratively compute the desired quantities: returs x in the end
     dim = noisy_img.shape
     N   = dim[0] * dim[1]
-    Hty = convolve2d(noisy_img, A, mode='same',boundary='wrap') # convolution of the noise matrix and the original matrix
+    Hty = ndimage.correlate(noisy_img, A, mode='constant', origin=-1)
     eigHtH = np.abs(scipy.fft.fftn(noisy_img, dim))**2
 
     v           = 0.5*np.ones(dim)
-    x           = np.copy(v)                       #suspect that the bug may arise here
+    x           = np.copy(v)                       
     u           = np.zeros(dim)
     residual    = np.inf
 

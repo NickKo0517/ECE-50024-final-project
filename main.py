@@ -2,27 +2,27 @@ from PnP_ADMM_General import PnP_ADMM_General
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
+from scipy import ndimage
 from scipy.signal import fftconvolve, convolve2d
 from gaussian_filter_gen import gaus_fiter_gen
 import cv2
 
 if __name__ == '__main__':
     img = Image.open('complex_img.jpg')
-    img = np.array(img) /255
+    img = np.array(img) / 255
 
     h = gaus_fiter_gen(sigma=1, size=(9,9))
 
-    # set noies level
+    # set noise level
     noise_level = 10/255
 
     # calculate observed image
-
-
-    y_with_blur = convolve2d(img, h,mode='valid',boundary='wrap')
+    y_with_blur =  ndimage.correlate(img, h, mode='constant', origin=-1)
     width, height = y_with_blur.shape
 
     y = y_with_blur + noise_level*np.random.randn(width, height)    #this is taking long...
     y = np.clip(y,a_min=0, a_max=1)
+    print(y)
 
 
     plt.imsave('y_noisy.png', y)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     opts = {
         'rho': 1,
         'gamma': 1,
-        'max_itr': 20
+        'max_itr': 40
     }
 
     # main routine
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     print(f'PSNR = {PSNR_output:3.2f} dB \n')
 
     # save the two images
-    plt.imsave('noisy_input.png', y)
-    plt.imsave('deblurred_img.png', out)
+    plt.imsave('demo/noisy_input.png', y)
+    plt.imsave('demo/deblurred_img.png', out)
