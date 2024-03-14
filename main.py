@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     plt.imsave('y_noisy.png', y)
     # set up parameters
-    method = 'RF'
+    method = 'BM3D'
     if method == 'RF':
         lambd = 0.0005
     elif method == 'NLM':
