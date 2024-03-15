@@ -2,7 +2,7 @@ from PnP_ADMM_General import PnP_ADMM_General
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
-from scipy import ndimage
+from scipy.ndimage import correlate
 from scipy.signal import fftconvolve, convolve2d
 from gaussian_filter_gen import gaus_fiter_gen
 import cv2
@@ -18,7 +18,7 @@ if __name__ == '__main__':
     noise_level = 10/255
 
     # calculate observed image
-    y_with_blur =  ndimage.correlate(img, h, mode='wrap')
+    y_with_blur =  correlate(img, h, mode='wrap')
     width, height = y_with_blur.shape
 
     y = y_with_blur + noise_level*np.random.randn(width, height)    #this is taking long...
@@ -39,12 +39,17 @@ if __name__ == '__main__':
     opts = {
         'rho': 1,
         'gamma': 1,
-        'max_itr': 40
+        'max_itr': 20,
+        'print': True
     }
 
     # main routine
     out = PnP_ADMM_General(noisy_img=y, A=h, lambd=lambd, method=method, params=opts)
-    print(out.shape)
+
+    #Debugging: Issue is that the "restored/filtered out" image has values that are too small
+    #which leads to a blacked out image as a whole
+    print('output from ADMM')
+    print(out[:5, :5])
     # display
     PSNR_output = cv2.PSNR(y, out)
     print(f'PSNR = {PSNR_output:3.2f} dB \n')

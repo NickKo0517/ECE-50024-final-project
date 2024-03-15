@@ -10,7 +10,7 @@ import cv2
 import copy
 
 """Ditch the RF filter as that requires extra adaptation from Matlab to Python"""
-def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
+def PnP_ADMM_Deblur(noisy_img: np.ndarray, A: np.matrix, lambd: float,
 					 method: str, params: dict[str: float])->np.ndarray:
     """
     inputs:
