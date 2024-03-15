@@ -6,6 +6,7 @@ from scipy.signal import fftconvolve, convolve2d
 from scipy import fftpack, ndimage
 from bm3d import bm3d
 import scipy
+import cv2
 import copy
 
 """Ditch the RF filter as that requires extra adaptation from Matlab to Python"""
@@ -58,8 +59,8 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     # iteratively compute the desired quantities: returs x in the end
     dim = noisy_img.shape
     N   = dim[0] * dim[1]
-    Hty = ndimage.correlate(noisy_img, A, mode='constant', origin=-1)
-    eigHtH = np.abs(scipy.fft.fftn(noisy_img, dim))**2
+    Hty = ndimage.correlate(noisy_img, A, mode='wrap')
+    eigHtH = np.abs(fft.fftn(noisy_img, dim))**2
 
     v           = 0.5*np.ones(dim)
     x           = np.copy(v)                       
@@ -70,14 +71,14 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     one_div_sqrtN = 1/np.sqrt(N)
     while (residual > tol) and (itr<=max_itr):
         # store x, v, u from previous iteration for psnr residual calculation
-        x_old = x
-        v_old = v
-        u_old = u
+        x_old = x.copy()
+        v_old = v.copy()
+        u_old = u.copy()
 
         # inversion step
         xtilde = v - u
-        rhs    = scipy.fft.fftn((Hty + rho*xtilde), dim)    #Hty should have same dimension with xtilde
-        x      = np.real(fft.ifftn(rhs/(eigHtH+rho)))
+        rhs    = fft.fftn((Hty + rho*xtilde), dim)    #Hty should have same dimension with xtilde
+        x      = np.real(fft.ifftn(np.divide(rhs, (eigHtH+rho))))
 
         # denoising step
         vtilde = x+u
@@ -95,10 +96,10 @@ def PnP_ADMM_General(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         # update rho
         rho = rho*gamma
 
-        # calculate residual
-        residualx = one_div_sqrtN*np.linalg.norm(x - x_old)
-        residualv = one_div_sqrtN*np.linalg.norm(v - v_old)
-        residualu = one_div_sqrtN*np.linalg.norm(u - u_old)
+        # calculate residual (Matlab Code has 2 sums: maybe x,u,v are all matrices)
+        residualx = one_div_sqrtN * np.sqrt(np.sum((x-x_old)**2))
+        residualv = one_div_sqrtN * np.sqrt(np.sum((v-v_old)**2))
+        residualu = one_div_sqrtN * np.sqrt(np.sum((u-u_old)**2))
 
         residual = residualx + residualv + residualu
 

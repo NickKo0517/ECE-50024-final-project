@@ -9,7 +9,8 @@ import cv2
 
 if __name__ == '__main__':
     img = Image.open('complex_img.jpg')
-    img = np.array(img) / 255
+    img = np.array(img) 
+    img = img / 255
 
     h = gaus_fiter_gen(sigma=1, size=(9,9))
 
@@ -17,15 +18,12 @@ if __name__ == '__main__':
     noise_level = 10/255
 
     # calculate observed image
-    y_with_blur =  ndimage.correlate(img, h, mode='constant', origin=-1)
+    y_with_blur =  ndimage.correlate(img, h, mode='wrap')
     width, height = y_with_blur.shape
 
     y = y_with_blur + noise_level*np.random.randn(width, height)    #this is taking long...
     y = np.clip(y,a_min=0, a_max=1)
-    print(y)
 
-
-    plt.imsave('y_noisy.png', y)
     # set up parameters
     method = 'BM3D'
     if method == 'RF':
@@ -46,11 +44,11 @@ if __name__ == '__main__':
 
     # main routine
     out = PnP_ADMM_General(noisy_img=y, A=h, lambd=lambd, method=method, params=opts)
-
+    print(out.shape)
     # display
     PSNR_output = cv2.PSNR(y, out)
     print(f'PSNR = {PSNR_output:3.2f} dB \n')
 
-    # save the two images
-    plt.imsave('demo/noisy_input.png', y)
-    plt.imsave('demo/deblurred_img.png', out)
+    # save the two images: convert them into greyscale
+    Image.fromarray((y*255).astype(np.uint8)).save('demo/noisy_input.png')
+    Image.fromarray((out*255).astype(np.uint8)).save('demo/deblurred_img.png')
