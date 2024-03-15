@@ -1,4 +1,4 @@
-from PnP_ADMM_General import PnP_ADMM_General
+from PnP_ADMM_deblur import PnP_ADMM_Deblur
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
