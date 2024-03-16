@@ -10,18 +10,19 @@
 ```
 * If executed successfully, there will be 2 images in the demo folder
 
-## Plan 3/3/2024:
-implement only image deblurring for Thursday Deadline (see section 2.1 in attached pdf (user_guide_v1.pdf))
+## Plan 3/3/2024: (Done)
+~~implement only image deblurring for Thursday Deadline (see section 2.1 in attached pdf (user_guide_v1.pdf))~~
 
 ## Project Goal:
-* Translate Matlab implementation from Dr.Stanley Chan to Python
-* Can reference other repos posted in WeChat
+* Translate Matlab implementation from Dr.Stanley Chan to Python (3/3/2024)
+* Decide what's a more "general" problem and what are the modules/tasks relevant to the solution
+* Translate relevant Matlab modules to Python (if they exist)/Implement solution in Python
 
 ## Progress Thus Far:
 * Reading/annotating user_guide_v1 with relevant information
 * Write functions to add noise (blurring) via convolution
 * Syncing up all existing branches (all branches have the same info for now)
-* Unsuccessful Deblur, don't know why
+* Successful implementation of deblurring, about to work on a more general case
 
 ## Recommendation on Getting Started/Working:
 * Spend 15 minutes daily in this repo to see if any changes are pushed
