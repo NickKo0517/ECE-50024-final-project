@@ -68,9 +68,6 @@ def PnP_ADMM_Deblur(noisy_img: np.ndarray, A: np.matrix, lambd: float,
     u           = np.zeros(dim)
     residual    = np.inf
 
-    #for debugging:
-    res_x, res_u, res_v = [], [], []
-    
     print('Plug-and-Play ADMM --- Deblurring')
     print('Denoiser = %s' % method)
     print('')
@@ -107,22 +104,10 @@ def PnP_ADMM_Deblur(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         residualv = one_div_sqrtN * np.sqrt(np.sum((v-v_old)**2))
         residualu = one_div_sqrtN * np.sqrt(np.sum((u-u_old)**2))
 
-        #for dubugging:
-        # res_x.append(residualx)
-        # res_u.append(residualu)
-        # res_v.append(residualv)
 
         residual = residualx + residualv + residualu
         print('{} \t {:3.5f} \t {:3.5f} \t {:3.5f} \n'.format(itr, residualx, residualv, residualu))
 
         itr = itr+1
     
-    #debugging:
-    # import matplotlib.pyplot as plt
-    # plt.plot(np.linspace(min(res_x), max(res_x), len(res_x)), res_x,
-    #          np.linspace(min(res_u), max(res_u), len(res_u)), res_u,
-    #          np.linspace(min(res_v), max(res_v), len(res_v)), res_v)
-    # plt.legend(('res_x', 'res_u', 'res_v'))
-    # plt.title('residual plot in ADMM')
-    # plt.savefig('residuals plot in ADMM')
     return v
