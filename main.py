@@ -8,7 +8,7 @@ from gaussian_filter_gen import gaus_fiter_gen
 import cv2
 
 if __name__ == '__main__':
-    img = Image.open('complex_img.jpg')
+    img = Image.open('House256.png')
     img = np.array(img) 
     img = img / 255
 
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     }
 
     # main routine
-    out = PnP_ADMM_General(noisy_img=y, A=h, lambd=lambd, method=method, params=opts)
+    out = PnP_ADMM_Deblur(noisy_img=y, A=h, lambd=lambd, method=method, params=opts)
 
     #Debugging: Issue is that the "restored/filtered out" image has values that are too small
     #which leads to a blacked out image as a whole
