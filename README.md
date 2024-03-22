@@ -1,7 +1,7 @@
 # ECE-50024-final-project 
 
 
-## Implementation of PnP-ADMM according to paper by Dr.Stanley. H. Chan 
+## Implementation of PnP-ADMM according to Dr.Stanley. H. Chan's paper
 reference: https://doi.org/10.48550/arXiv.1605.01710 
 
 ## Running the Code
