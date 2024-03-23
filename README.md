@@ -18,10 +18,14 @@ reference: https://doi.org/10.48550/arXiv.1605.01710
 ~~* Translate Matlab implementation from Dr.Stanley Chan to Python (3/3/2024)~~
 ### (Checkpoint 5)
 - What's a more "general" problem to solve? 
+    ANS: Image Deblurring (read from a blurry image and try to restore the "sharper" original)
 - Where are the dataset(s) of this problem?
+    ANS: See section (Sample Data for use)
 - (Is current implementation enough to solve this problem?)
+    ANS: No, needs to figure out how to deduce the blur kernel in the given image
 - What is the intended result after the application of our Python implementation
-* Translate relevant Matlab modules to Python if they exist, else implement it with Python library
+    ANS: cleaner image than input
+~~* Translate relevant Matlab modules to Python if they exist, else implement it with Python library~~
 
 ## Progress Thus Far:
 * Reading/annotating user_guide_v1 with relevant information
