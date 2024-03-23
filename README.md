@@ -5,7 +5,7 @@
 reference: https://doi.org/10.48550/arXiv.1605.01710 
 
 ## Running the Code
-* if on local machine, clone this repo then use the following command to execute
+* Assume python intalled on local machine with all relevant libraries, run
 ```bash
  python3 main.py
 ```
