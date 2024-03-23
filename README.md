@@ -22,11 +22,11 @@ reference: https://doi.org/10.48550/arXiv.1605.01710
     > ANS: Image Deblurring (read from a blurry image and try to restore the "sharper" original)
 - Where are the dataset(s) of this problem?  
 
-    > ANS: See section (Sample Data for use)
+    > ANS: See section (Sample datasets to use)
 - (Is current implementation enough to solve this problem?)  
 
     > ANS: No, needs to figure out how to deduce the blur kernel in the given image
-- What is the intended result after the application of our Python implementation  
+- What is the intended result after the application of our Python implementation?  
 
     > ANS: cleaner image than input  
 
