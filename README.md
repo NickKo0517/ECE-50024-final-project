@@ -34,6 +34,7 @@ reference: https://doi.org/10.48550/arXiv.1605.01710
 ##### Tasks:
 1. Find a reliable deblur estimation algorithm, implement in python if neccessary
 2. Write Python Code that generates PSNR vs iteration number plot for (at least 2) different denoisers. 
+
 ~~* Translate relevant Matlab modules to Python if they exist, else implement it with Python library~~
 
 ## Progress Thus Far:
