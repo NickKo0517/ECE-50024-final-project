@@ -39,6 +39,7 @@ reference: https://doi.org/10.48550/arXiv.1605.01710
 * this is in general a CNN problem/task, but our goal is not just detection: still have to deduce the kernel (the first link would be more helpful in my opinion)
 * https://www.kaggle.com/code/valentinld/blurdetection#Train
 * https://www.kaggle.com/code/michaelcripman/blurred-image-classification
+
 ~~* Translate relevant Matlab modules to Python if they exist, else implement it with Python library~~
 
 ## Progress Thus Far:
