@@ -25,7 +25,7 @@ if __name__ == '__main__':
     y = np.clip(y,a_min=0, a_max=1)
 
     # set up parameters
-    method = 'BM3D'
+    method = 'NLM'
     if method == 'RF':
         lambd = 0.0005
     elif method == 'NLM':
