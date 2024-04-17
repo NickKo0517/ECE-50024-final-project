@@ -8,11 +8,17 @@ from gaussian_filter_gen import gaus_fiter_gen
 import cv2
 
 if __name__ == '__main__':
+    #remove below
     img = Image.open('House256.png')
     img = np.array(img) 
     img = img / 255
 
     h = gaus_fiter_gen(sigma=1, size=(9,9))
+    #remove until here
+
+    """wrapper that determines blur kernel and store it as a separate file in dir"""
+
+    """section that 1. reads in the repo, 2. convert it into np.array"""
 
     # set noise level
     noise_level = 10/255

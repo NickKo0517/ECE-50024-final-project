@@ -1,0 +1,1 @@
+deblur Examples/nvBlurImage.png        Examples/nvOut.png       27 27 0.01  0.2 1 0 0 0 0 3.5
