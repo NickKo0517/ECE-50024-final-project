@@ -9,12 +9,15 @@ import cv2
 
 if __name__ == '__main__':
     #remove below
-    img = Image.open('House256.png')
-    img = np.array(img) 
-    img = img / 255
+    # img = Image.open('House256.png')
+    # img = np.array(img) 
+    # img = img / 255
 
-    h = gaus_fiter_gen(sigma=1, size=(9,9))
+    # h = gaus_fiter_gen(sigma=1, size=(9,9))
     #remove until here
+    path = '../hq_deblur/Examples/nvBlurImage_kernel.png'
+    image = Image.open(path).convert('L')
+    h = np.array(image)
 
     """wrapper that determines blur kernel and store it as a separate file in dir"""
 
