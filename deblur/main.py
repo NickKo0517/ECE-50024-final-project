@@ -1,4 +1,5 @@
 from PnP_ADMM_deblur import PnP_ADMM_Deblur
+from utils import *
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -8,29 +9,13 @@ from gaussian_filter_gen import gaus_fiter_gen
 import cv2
 
 if __name__ == '__main__':
-    #remove below
-    img = Image.open('House256.png')
-    img = np.array(img) 
-    img = img / 255
-
-    h = gaus_fiter_gen(sigma=1, size=(9,9))
-    #remove until here
 
     """wrapper that determines blur kernel and store it as a separate file in dir"""
+    kernelName = estimate_kernel()
+    """section that 1. reads in the kernel and 2. convert it into np.array"""
+    h = np.array(Image.open(kernelName))
 
-    """section that 1. reads in the repo, 2. convert it into np.array"""
-
-    # set noise level
-    noise_level = 10/255
-
-    # calculate observed image
-    y_with_blur =  correlate(img, h, mode='wrap')
-    width, height = y_with_blur.shape
-
-    y = y_with_blur + noise_level*np.random.randn(width, height)    #this is taking long...
-    y = np.clip(y,a_min=0, a_max=1)
-
-    # set up parameters
+    # set up parameters for ADMM
     method = 'NLM'
     if method == 'RF':
         lambd = 0.0005
@@ -38,7 +23,8 @@ if __name__ == '__main__':
         lambd = 0.0005
     elif method == 'BM3D':
         lambd = 0.001
-    elif method == 'TV':
+    else: #if input is something not supported bh the file, use TV as default denoiser
+        method = 'TV'
         lambd = 0.01
 
     # optional parameters
