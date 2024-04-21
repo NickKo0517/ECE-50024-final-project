@@ -1,5 +1,6 @@
 from PnP_ADMM_deblur import PnP_ADMM_Deblur
 from utils import *
+from utils import *
 import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
@@ -14,7 +15,11 @@ if __name__ == '__main__':
     kernelName = estimate_kernel()
     """section that 1. reads in the kernel and 2. convert it into np.array"""
     h = np.array(Image.open(kernelName))
+    kernelName = estimate_kernel()
+    """section that 1. reads in the kernel and 2. convert it into np.array"""
+    h = np.array(Image.open(kernelName))
 
+    # set up parameters for ADMM
     # set up parameters for ADMM
     method = 'NLM'
     if method == 'RF':
@@ -23,7 +28,7 @@ if __name__ == '__main__':
         lambd = 0.0005
     elif method == 'BM3D':
         lambd = 0.001
-    else: #if input is something not supported bh the file, use TV as default denoiser
+    else: #if input is something not supported by the file, use TV as default denoiser
         method = 'TV'
         lambd = 0.01
 
