@@ -4,6 +4,11 @@
 ## Implementation of PnP-ADMM according to Dr.Stanley. H. Chan's paper
 reference: https://doi.org/10.48550/arXiv.1605.01710 
 
+## Results of Running hq_deblur Examples
+* kernel size that works best for hq_deblur is 27 x 27
+* For PnP_ADMM to perform well, the kernel size has to be 9 x 9
+* 9 x 9 does not yield the cleanest deblur
+
 ## Running the Code
 * Go to the deblur folder for deblur demo 
 # **IMPORTANT: kernel_estimation only works on x86 machines**
