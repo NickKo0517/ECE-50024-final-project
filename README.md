@@ -6,6 +6,7 @@ reference: https://doi.org/10.48550/arXiv.1605.01710
 
 ## Running the Code
 * Go to the deblur folder for deblur demo 
+# **IMPORTANT: kernel_estimation only works on x86 machines**
 * Assume python intalled on local machine with all relevant libraries, run
 ```bash
  python3 main.py
