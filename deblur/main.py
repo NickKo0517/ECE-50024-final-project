@@ -10,8 +10,13 @@ from gaussian_filter_gen import gaus_fiter_gen
 
 if __name__ == '__main__':
     """wrapper that determines blur kernel and store it as a separate file in dir"""
-    h_width, h_height = 27, 27
-    kernelName = estimate_kernel()
+    h_width = input("input desired kernel width: ")
+    h_height = input("input desired kernel height: ")
+    if h_width <= 0:
+        h_width = 27
+    if h_height <= 0:
+        h_height = 27
+    kernelName = estimate_kernel(h_width=h_width, h_height=h_height)
     """section that 1. reads in the kernel and 2. convert it into np.array"""
     h = Image.open(kernelName)
     h = np.asanyarray(h)
