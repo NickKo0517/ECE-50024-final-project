@@ -8,6 +8,3 @@ def gaus_fiter_gen(sigma, size):
     h = np.exp(-(x**2 + y**2) / (2. * sigma**2))
     h = h / np.sum(h)  # Normalize
     return h
-
-h = gaus_fiter_gen(1, (9,9))
-Image.fromarray((h*255).astype(np.uint8)).save('gaus_kernel.png')

@@ -4,7 +4,7 @@ from PIL import Image, ImageOps
 import numpy as np
 from scipy.ndimage import correlate
 from scipy.signal import fftconvolve, convolve2d
-from gaussian_filter_gen import gaus_fiter_gen
+# from gaussian_filter_gen import gaus_fiter_gen
 import cv2
 
 if __name__ == '__main__':
@@ -45,31 +45,42 @@ if __name__ == '__main__':
         lambd = 0.01
 
     # optional parameters
+    iter = 20
     opts = {
         'rho': 1,
         'gamma': 1,
-        'max_itr': 20,
+        'max_itr': iter,
         'print': True
     }
 
     # main routine
     y = Image.open(imgName)
-    # y = ImageOps.grayscale(y)
+    y = ImageOps.grayscale(y)
     y = np.asanyarray(y)
-    print(y[:3, :3])
-    out = np.zeros(y.shape)
-    for i in range(y.shape[2]):
-        out[:,:,i] = PnP_ADMM_Deblur(noisy_img=y[:,:,i], 
-            A=h, lambd=lambd, method=method, params=opts)
+    # out = np.zeros(y.shape)
+    out = PnP_ADMM_Deblur(y, h, lambd, method, opts)
+    # for i in range(y.shape[2]):
+    #     out[:,:,i] = PnP_ADMM_Deblur(noisy_img=y[:,:,i],
+    #     A=h, lambd=lambd, method=method, params=opts)
 
     #Debugging: Issue is that the "restored/filtered out" image has values that are too small
     #which leads to a blacked out image as a whole
     # display
     print(f'y is {type(y)}, dimension {y.shape}')
     print(f'out is {type(out)}, dimension {out.shape}')
-    # save the two images: convert them into greyscale
-    out = Image.fromarray((out*255).astype(np.uint8)).save('demo/deblurred_img.png')
+    """IMPORTANT: convert it to uint8 before other stuff"""
+    out = (out*255).astype(np.uint8)    #uint8 shall be the standard for rgb/grayscale?
+    out = y - out   #ADMM gives out "noise" of the input image, so subtract from it
+    
+    #second iteration of ADMM, see result
+    out = PnP_ADMM_Deblur(out, h, lambd, method, opts)
+    out = (out * 255).astype(np.uint8)
+    out = y - out       #remove "noise" once again
 
-    # PSNR_output = cv2.PSNR(out, y)
-    # print(f'PSNR = {PSNR_output:3.2f} dB \n')
+    print(out[:3,:3])
+    Image.fromarray(out).save("ADMM_deblur.png")
+
+    """Compute PSNR"""
+    PSNR_output = cv2.PSNR(out, y)
+    print(f'PSNR = {PSNR_output:3.2f} dB \n')
 
