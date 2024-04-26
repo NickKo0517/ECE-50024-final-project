@@ -4,8 +4,7 @@ from PIL import Image, ImageOps
 import numpy as np
 from scipy.ndimage import correlate
 from scipy.signal import fftconvolve, convolve2d
-from gaussian_filter_gen import gaus_fiter_gen
-from skimage import metrics         #for psnr computation
+import cv2
 
 if __name__ == '__main__':
     h_width = int(input("input desired kernel width: "))
@@ -23,11 +22,14 @@ if __name__ == '__main__':
     """wrapper that determines blur kernel and store it as a separate file in dir"""
     kernelName = estimate_kernel(h_width=h_width, h_height=h_height, imgName=imgName)
 
+    print(f'kernelName = {kernelName}')
     """section that 1. reads in the kernel and 2. convert it into np.array"""
     h = Image.open(kernelName)
     h = ImageOps.grayscale(h)
-    h = np.asanyarray(h)
+    h = np.array(h)
+    h = h / float(255)
     print(h.shape)
+    print(h[:3, :3])
     
     # set up parameters for ADMM
     method = 'NLM'
@@ -42,28 +44,38 @@ if __name__ == '__main__':
         lambd = 0.01
 
     # optional parameters
+    iter = 20
     opts = {
         'rho': 1,
         'gamma': 1,
-        'max_itr': 20,
-        'print': True
+        'max_itr': iter,
+        'print': False
     }
 
     # main routine
     y = Image.open(imgName)
     y = ImageOps.grayscale(y)
-    y = np.asanyarray(y)
-    out = PnP_ADMM_Deblur(noisy_img=y, A=h, lambd=lambd, method=method, params=opts)
+    y = np.array(y).astype(float)
 
-    #Debugging: Issue is that the "restored/filtered out" image has values that are too small
-    #which leads to a blacked out image as a whole
-    print('output from ADMM')
-    print(out[:5, :5])
-    # display
-    print(f'y is {type(y)}, dimension {y.shape}')
-    print(f'out is {type(out)}, dimension {out.shape}')
-    PSNR_output = metrics.peak_signal_noise_ratio(y, out)
+    original_y = y.copy()   #y would be updated in the ADMM cycle, so keep a copy
+
+    """ repetitively apply ADMM to generate "noise" """
+    ADMMIter = 15
+    out = np.zeros(y.shape)
+    for i in range(ADMMIter):
+        #ADMM gives out "noise" of the input image, so subtract from it
+        print(f'ADMM for the {i+1} time')
+        y -= out
+        out = PnP_ADMM_Deblur(y, h, lambd, method, opts)
+
+    """Compute PSNR"""
+    out = y - out
+    PSNR_output = cv2.PSNR(out, original_y)
     print(f'PSNR = {PSNR_output:3.2f} dB \n')
 
-    # save the two images: convert them into greyscale
-    Image.fromarray((out*255).astype(np.uint8)).save('demo/deblurred_img.png')
+    """remove "noise" obtained from ADMM"""
+    #ADMM gives out "noise" of the input image, so subtract from y
+    out = out.astype(np.uint8) #convert as uint8 before saving as png
+    print(out[:3,:3])
+    Image.fromarray(out).save("ADMM_deblur.png")
+

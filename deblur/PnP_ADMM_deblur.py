@@ -6,7 +6,6 @@ from scipy.signal import fftconvolve, convolve2d
 from scipy import fftpack, ndimage
 from bm3d import bm3d
 from scipy.ndimage import correlate
-import cv2
 import copy
 
 """Ditch the RF filter as that requires extra adaptation from Matlab to Python"""
@@ -37,6 +36,8 @@ def PnP_ADMM_Deblur(noisy_img: np.ndarray, A: np.matrix, lambd: float,
         params['tol'] = 1e-4
     if 'gamma' not in params:
         params['gamma'] = 1
+    if 'print' not in params:
+        params['print'] = True
 
     # loop parameters setup
     rho = params['rho']
@@ -70,8 +71,8 @@ def PnP_ADMM_Deblur(noisy_img: np.ndarray, A: np.matrix, lambd: float,
 
     print('Plug-and-Play ADMM --- Deblurring')
     print('Denoiser = %s' % method)
-    print('')
-    print('itr \t ||x-xold|| \t ||v-vold|| \t ||u-uold||')
+    if params['print']:
+        print('itr \t ||x-xold|| \t ||v-vold|| \t ||u-uold||')
 
     #main loop
     itr = 1
@@ -106,8 +107,8 @@ def PnP_ADMM_Deblur(noisy_img: np.ndarray, A: np.matrix, lambd: float,
 
 
         residual = residualx + residualv + residualu
-        print('{} \t {:3.5f} \t {:3.5f} \t {:3.5f} \n'.format(itr, residualx, residualv, residualu))
-
+        if params['print']:
+            print('{} \t {:3.5f} \t {:3.5f} \t {:3.5f} \n'.format(itr, residualx, residualv, residualu))
         itr = itr+1
     
     return v

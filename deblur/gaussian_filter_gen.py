@@ -1,4 +1,5 @@
 import numpy as np
+from PIL import Image
 
 def gaus_fiter_gen(sigma, size):
     x = np.arange(-size[0]//2 + 1., size[0]//2 + 1.)

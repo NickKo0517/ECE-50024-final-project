@@ -28,3 +28,9 @@ print(A)
 print(np.sum(A, axis=0))    #add up each column
 print(np.sum(A, axis=1))    #add up each row
 print(np.sum(A, axis=None)) #add up each element in the matrix
+
+from PIL import Image
+img = Image.open(r"..\hq_deblur\Examples\picassoBlurImage.png")
+img = np.asarray(img)
+print(img.shape)
+print(img[:3,:3])
