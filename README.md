@@ -17,7 +17,7 @@ python3 main.py
 
 ## Project Goal:
 * Given an image with motion blur, restore the "clean" image "hidden" under the blur.
-* Blur kernel, an essential parameter for restoration is unknown when the image is read-in by the program
+* Blur kernel, an essential parameter for restoration, is unknown when the image is read-in by the program
 * Blur kernel would be estimated using methods and executable provided by the authors of HQ-Deblur
 ### Blur Estimation/Detection Demo/Resource 
 * https://www.kaggle.com/datasets/kwentar/blur-dataset
