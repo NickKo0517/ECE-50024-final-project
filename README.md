@@ -28,8 +28,8 @@ python3 main.py
 Chan, S. H., Wang, X., and Elgendy, O. A. Plug-and-play
  admm for image restoration: Fixed-point convergence
  and applications. IEEE Transactions on Computational
- Imaging, 3(1):84–98, 2016. 
- https://doi.org/10.48550/arXiv.1605.01710
+ Imaging, 3(1):84–98, 2016.  
+ https://doi.org/10.48550/arXiv.1605.01710  
 Shan, Q., Jia, J., and Agarwala, A. High-quality motion deblurring from a single image. ACM Transactions on
- Graphics (SIGGRAPH), 2008.
+ Graphics (SIGGRAPH), 2008.  
  https://www.cse.cuhk.edu.hk/~leojia/projects/motion_deblurring/index.html
