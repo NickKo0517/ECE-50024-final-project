@@ -24,7 +24,7 @@ python3 main.py
 * https://www.kaggle.com/code/valentinld/blurdetection#Train
 * https://www.kaggle.com/code/michaelcripman/blurred-image-classification
 
-##Reference
+## References
 Chan, S. H., Wang, X., and Elgendy, O. A. Plug-and-play
  admm for image restoration: Fixed-point convergence
  and applications. IEEE Transactions on Computational
