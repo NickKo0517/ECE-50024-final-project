@@ -1,65 +1,35 @@
 # ECE-50024-final-project 
 
-
-## Implementation of PnP-ADMM according to Dr.Stanley. H. Chan's paper
-reference: https://doi.org/10.48550/arXiv.1605.01710 
-
-## Results of Running hq_deblur Examples
-* kernel size that works best for hq_deblur is 27 x 27
-* For PnP_ADMM to perform well, the kernel size has to be 9 x 9
-* 9 x 9 does not yield the cleanest deblur
-
-## Running the Code
-* Go to the deblur folder for deblur demo 
-# **IMPORTANT: kernel_estimation only works on x86 machines**
-* Assume python intalled on local machine with all relevant libraries, run
+# Blind Deconvolution Attempt Using HQ-Deblur and PnP-ADMM
+ 
+## Executing Python Code
+* Go to the deblur folder for deblur demo
+* Interpret/compile with Python 3.11.0. Using basic packages like Numpy, SciPy, and SciKit-Learn
+* Assume all relevant packages installed properly, go to deblur/ folder and run
 ```bash
- python3 main.py
+python3 main.py
 ```
-* If executed successfully, there will be 2 images in the demo folder
+* Adjustments (modifying certain lines of code) might be needed before executing.
+* If executed successfully, the deblurred image would be saved in the deblur/ folder with name "ADMM_deblur.png"
 
-## Plan 3/3/2024: (Done)
-~~implement only image deblurring for Thursday Deadline (see section 2.1 in attached pdf (user_guide_v1.pdf))~~
+### **IMPORTANT: kernel_estimation only works on x86 machines**
+
 
 ## Project Goal:
-~~* Translate Matlab implementation from Dr.Stanley Chan to Python (3/3/2024)~~
-### (Checkpoint 5)
-- What's a more "general" problem to solve?  
-
-    > ANS: Image Deblurring (read from a blurry image and try to restore the "sharper" original)
-- Where are the dataset(s) of this problem?  
-
-    > ANS: See section (Sample datasets to use)
-- (Is current implementation enough to solve this problem?)  
-
-    > ANS: No, needs to figure out how to deduce the blur kernel in the given image
-- What is the intended result after the application of our Python implementation?  
-
-    > ANS: cleaner image than input  
-#### Tips from Dr.Stanley Chan: 
-* We are solving a difficult problem called blind deconvolution. It requires finding an estimate of the blur kernel then deblur with ADMM deblur. 
-##### Tasks:
-1. Find a reliable deblur estimation algorithm, implement in python if neccessary
-2. Write Python Code that generates PSNR vs iteration number plot for (at least 2) different denoisers. 
-
+* Given an image with motion blur, restore the "clean" image "hidden" under the blur.
+* Blur kernel, an essential parameter for restoration is unknown when the image is read-in by the program
+* Blur kernel would be estimated using methods and executable provided by the authors of HQ-Deblur
 ### Blur Estimation/Detection Demo/Resource 
-* this is in general a CNN problem/task, but our goal is not just detection: still have to deduce the kernel (the first link would be more helpful in my opinion)
+* https://www.kaggle.com/datasets/kwentar/blur-dataset
 * https://www.kaggle.com/code/valentinld/blurdetection#Train
 * https://www.kaggle.com/code/michaelcripman/blurred-image-classification
 
-~~* Translate relevant Matlab modules to Python if they exist, else implement it with Python library~~
-
-## Progress Thus Far:
-* Reading/annotating user_guide_v1 with relevant information
-* Write functions to add noise (blurring) via convolution
-* Syncing up all existing branches (all branches have the same info for now)
-* Successful implementation of deblurring, about to work on a more general case
-
-## Recommendation on Getting Started/Working:
-* Spend 15 minutes daily in this repo to see if any changes are pushed
-* Understand the user guide well (it's fine if you write a little code but have a good understanding)
-* If you annotate (add more comments/info) to user_guide_v1, it is okay to push to main branch
-* If write code, it is recommended that you push it to your own branch
-
-## Sample datasets to use:
-https://www.kaggle.com/datasets/kwentar/blur-dataset
+##Reference
+Chan, S. H., Wang, X., and Elgendy, O. A. Plug-and-play
+ admm for image restoration: Fixed-point convergence
+ and applications. IEEE Transactions on Computational
+ Imaging, 3(1):84–98, 2016. 
+ https://doi.org/10.48550/arXiv.1605.01710
+Shan, Q., Jia, J., and Agarwala, A. High-quality motion deblurring from a single image. ACM Transactions on
+ Graphics (SIGGRAPH), 2008.
+ https://www.cse.cuhk.edu.hk/~leojia/projects/motion_deblurring/index.html
